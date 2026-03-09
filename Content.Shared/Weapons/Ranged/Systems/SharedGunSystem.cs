@@ -265,24 +265,25 @@ public abstract partial class SharedGunSystem : EntitySystem
 
         var curTime = Timing.CurTime;
 
+        // For if we can't fire yet.
+        // Need to do this to play the clicking sound for empty automatic weapons
+        // but not play anything for burst fire.
+        if (gun.Comp.NextFire > curTime)
+            return false;
+
         // check if anything wants to prevent shooting
         var prevention = new ShotAttemptedEvent
         {
             User = user,
             Used = gun
         };
-        RaiseLocalEvent(gun, ref prevention);
-        if (prevention.Cancelled)
+        RaiseLocalEvent(gun, ref prevention); //Inform the gun
+        RaiseLocalEvent(user, ref prevention); //Inform the user
+        if (prevention.Cancelled) //If something does cancel it update NextFire with CancelledCooldown
+        {
+            gun.Comp.NextFire += gun.Comp.CancelledCooldown;
             return false;
-
-        RaiseLocalEvent(user, ref prevention);
-        if (prevention.Cancelled)
-            return false;
-
-        // Need to do this to play the clicking sound for empty automatic weapons
-        // but not play anything for burst fire.
-        if (gun.Comp.NextFire > curTime)
-            return false;
+        }
 
         var fireRate = TimeSpan.FromSeconds(1f / gun.Comp.FireRateModified);
 
