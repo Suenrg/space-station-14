@@ -252,6 +252,13 @@ public sealed partial class GunComponent : Component
     public bool ShowExamineText = true;
 
     /// <summary>
+    /// Whether or not information about
+    /// the gun will be shown on examine.
+    /// </summary>
+    [DataField]
+    public TimeSpan CancelledCooldown = TimeSpan.FromSeconds(1);
+
+    /// <summary>
     /// Whether or not someone with the
     /// clumsy trait can shoot this
     /// </summary>
