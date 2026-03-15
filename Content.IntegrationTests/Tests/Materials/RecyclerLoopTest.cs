@@ -2,6 +2,7 @@ using Content.IntegrationTests.Tests.Interaction;
 using Content.Server.Materials;
 using Content.Shared.Materials;
 
+using Content.IntegrationTests.Utility;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Materials;
@@ -15,5 +16,6 @@ private static readonly EntProtoId DefibrillatorProtoId = "Defibrillator";
 [TestOf(typeof(MaterialReclaimerComponent))]
 public sealed class RecyclerLoopTest : InteractionTest
 {
-    //
+    private static string[] _materials = GameDataScrounger.EntitiesWithComponent("Healing");
+    private static string[] _topicalsToBeTested = GameDataScrounger.EntitiesWithComponent("Healing");
 }
