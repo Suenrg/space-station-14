@@ -7,15 +7,24 @@ using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests.Materials;
 //ProtoIDs we may need
-private static readonly EntProtoId DefibrillatorProtoId = "Defibrillator";
+// private static readonly EntProtoId DefibrillatorProtoId = "Defibrillator";
 
 /// <summary>
-/// Tests for topicals.
+/// Tests to prevent Recycler loops, where the product of one recycling can be recycled again.
 /// </summary>
 [TestOf(typeof(MaterialReclaimerSystem))]
 [TestOf(typeof(MaterialReclaimerComponent))]
-public sealed class RecyclerLoopTest : InteractionTest
+public sealed class RecyclingLoopTest : InteractionTest
 {
-    private static string[] _materials = GameDataScrounger.EntitiesWithComponent("Healing");
-    private static string[] _topicalsToBeTested = GameDataScrounger.EntitiesWithComponent("Healing");
+    private static string[] _recyleables = GameDataScrounger.EntitiesWithComponent("PhysicalCompositionComponent");
+    private static string[] _reclaimers = GameDataScrounger.EntitiesWithComponent("MaterialReclaimerComponent");
+
+    /// <summary>
+    /// For each entity that recycles into materials, recycle it and check that
+    /// </summary>
+    [Test]
+    public async Task RecyclerLoopTest([ValueSource(nameof(_recyleables))] string reclaimerID, [ValueSource(nameof(_recyleables))] string recyclableID)
+    {
+        //yippee
+    }
 }
